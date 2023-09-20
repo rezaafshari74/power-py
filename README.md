@@ -1,49 +1,57 @@
-# Power System Fault Analysis with Python
+import numpy as np
+import matplotlib.pyplot as plt
 
-This Python script is designed for analyzing power systems under fault conditions. It calculates and visualizes bus currents after a fault has occurred in a power network.
-## Features
+# Define the voltage values at bus 3 and bus 4
+V3 = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+V4 = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 
-- Calculates bus currents after a fault in a power network.
-- Visualizes the real and imaginary parts of the calculated currents.
-- Easy-to-use Python script for power system engineers and students.
+# Define the admittance matrices Y3 and Y4
+Y3 = np.array([[0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1144 + 0.6848j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
+               [0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1144 + 0.6848j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j],
+               [0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j],
+               [0.1144 + 0.6848j, 0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
+               [0.1608 + 0.7478j, 0.1144 + 0.6848j, 0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
+               [0.1309 + 0.5973j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.1309 + 0.5973j, 0.1961 + 1.5928j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
+               [0.2104 + 0.8320j, 0.1309 + 0.5973j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.4267 - 11.0715j, 0.2104 + 0.8320j, 0.1309 + 0.5973j, 0.2104 + 0.8320j],
+               [0.1608 + 0.7478j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.2104 + 0.8320j, 0.4811 - 10.0023j, 0.1608 + 0.7478j, 0.2104 + 0.8320j],
+               [0.0826 + 0.2831j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.1309 + 0.5973j, 0.1608 + 0.7478j, 0.1563 - 3.8915j, 0.1608 + 0.7478j],
+               [0.1961 + 1.5928j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.1961 + 1.5928j, 0.1961 + 1.5928j, 0.1961 + 1.5928j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.6412 - 16.8938j]])
 
-## Prerequisites
+Y4 = np.array([[0.1275 - 3.4084j, 0.0602 + 2.2828j, 0.0626 + 0.1259j, 0.0503 + 0.1147j, 0.0246 + 0.1411j, 0.0566 + 0.2610j, 0.1262 + 0.6649j, 0.0566 + 0.2610j, 0.1262 + 0.6649j, 0.2974 - 8.1663j],
+               [0.0602 + 2.2828j, 0.1527 - 3.4695j, 0.0626 + 0.1259j, 0.0503 + 0.1147j, 0.0246 + 0.1411j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1986 + 0.8729j],
+               [0.0626 + 0.1259j, 0.0626 + 0.1259j, 0.1371 - 3.2975j, 0.0400 + 0.0880j, 0.0245 + 0.1410j, 0.0564 + 0.2607j, 0.1260 + 0.6645j, 0.0564 + 0.2607j, 0.1260 + 0.6645j, 0.2976 - 8.1661j],
+               [0.0503 + 0.1147j, 0.0503 + 0.1147j, 0.0400 + 0.0880j, 0.1091 - 2.9505j, 0.0227 + 0.1177j, 0.0518 + 0.2634j, 0.1104 + 0.6141j, 0.0518 + 0.2634j, 0.1104 + 0.6141j, 0.2558 - 6.7784j],
+               [0.0246 + 0.1411j, 0.0246 + 0.1411j, 0.0245 + 0.1410j, 0.0227 + 0.1177j, 0.1095 - 2.9256j, 0.0289 + 0.1355j, 0.0590 + 0.3143j, 0.0289 + 0.1355j, 0.0590 + 0.3143j, 0.1389 + 0.5992j],
+               [0.0566 + 0.2610j, 0.0326 + 0.1446j, 0.0564 + 0.2607j, 0.0518 + 0.2634j, 0.0289 + 0.1355j, 0.1275 - 3.4084j, 0.1262 + 0.6649j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1986 + 0.8729j],
+               [0.1262 + 0.6649j, 0.0820 + 0.3649j, 0.1260 + 0.6645j, 0.1104 + 0.6141j, 0.0590 + 0.3143j, 0.1262 + 0.6649j, 0.2554 - 6.8238j, 0.0820 + 0.3649j, 0.1986 + 0.8729j, 0.4049 - 10.7401j],
+               [0.0566 + 0.2610j, 0.0326 + 0.1446j, 0.0564 + 0.2607j, 0.0518 + 0.2634j, 0.0289 + 0.1355j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1275 - 3.4695j, 0.0626 + 0.1259j, 0.1986 + 0.8729j],
+               [0.1262 + 0.6649j, 0.0820 + 0.3649j, 0.1260 + 0.6645j, 0.1104 + 0.6141j, 0.0590 + 0.3143j, 0.0820 + 0.3649j, 0.1986 + 0.8729j, 0.0626 + 0.1259j, 0.1371 - 3.2975j, 0.2974 - 8.1663j],
+               [0.2974 - 8.1663j, 0.1986 + 0.8729j, 0.2976 - 8.1661j, 0.2558 - 6.7784j, 0.1389 + 0.5992j, 0.1986 + 0.8729j, 0.4049 - 10.7401j, 0.1986 + 0.8729j, 0.2974 - 8.1663j, 0.7295 - 19.6049j]])
 
-Before you can use this script, ensure you have the following:
+# Define the fault impedance
+Zf = 0.1 + 1j * 1.0
 
-- Python 3.x installed on your machine.
-- Required Python packages (NumPy, Matplotlib) installed. You can install them using pip:
+# Define the current values at bus 3 with the fault current injection
+I3 = np.array([0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])  # Injecting 10 A at bus 3
 
-```bash
-pip install numpy matplotlib
-To get started with this project, follow these steps:
-git clone https://github.com/your-username/power-fault-analysis.git
-cd power-fault-analysis
-Open the power_fault_analysis.py script in a text editor or Python IDE to customize the power system parameters. ( I ran the code in this 
-Visual Studio Code program).
-In the script, you can define the power system parameters, including:
+# Calculate the bus currents
+I = np.linalg.solve(Y3 + np.diag([Zf] * 10), Y4 @ np.conj(I3) - (np.conj(V3) - V4) / Zf)
 
-Voltage values at bus 3 and bus 4 (V3 and V4 arrays).
-Admittance matrices Y3 and Y4.
-Fault impedance (Zf).
-Current injection at bus 3 (I3 array).
-Modify the parameters according to your specific power system scenario.
+# Print the bus currents
+for i, current in enumerate(I):
+    print(f"I{i + 1} = {current:.4f} A")
 
-Run the script to calculate the bus currents:
-python power_fault_analysis.py
-Results
-After running the script, it will print the calculated bus currents to the console. Additionally, it will create a bar chart to visualize the real and imaginary parts of the currents.
+# Extract the real and imaginary parts of the currents for plotting
+real_parts = np.real(I)
+imaginary_parts = np.imag(I)
 
-Contributing
-Contributions to this project are welcome! If you have improvements or bug fixes to propose, please follow these steps:
-
-Fork the repository.
-
-Create a new branch for your feature or bug fix.
-
-Make your changes and commit them.
-
-Push your branch to your fork.
-
-Create a pull request to merge your changes into this repository.
+# Create a bar chart to visualize the real and imaginary parts of the currents
+bus_numbers = range(1, len(I) + 1)
+plt.bar(bus_numbers, real_parts, label='Real Part', width=0.4)
+plt.bar(bus_numbers, imaginary_parts, label='Imaginary Part', width=0.4, bottom=real_parts)
+plt.xlabel('Bus Number')
+plt.ylabel('Current (A)')
+plt.title('Bus Currents After Fault')
+plt.legend()
+plt.show()
 
