@@ -1,4 +1,4 @@
-Readme file
+Readme file:
 This Python script is designed for analyzing power systems under fault conditions. It calculates and visualizes bus currents after a fault has occurred in a power network.
 Features
 •	Calculates bus currents after a fault in a power network.
