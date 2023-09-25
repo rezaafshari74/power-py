@@ -1,56 +1,94 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from swing_simulation import swing  # Import the swing function from swing_simulation
 
-# Define the voltage values at bus 3 and bus 4
-V3 = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
-V4 = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+# Load grid parameters from NE_test_parameters
+from NE_test_parameters import *
 
-# Define the admittance matrices Y3 and Y4
-Y3 = np.array([[0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1144 + 0.6848j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
-               [0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1144 + 0.6848j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j],
-               [0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.0916 + 0.5287j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j],
-               [0.1144 + 0.6848j, 0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.0670 + 2.9064j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
-               [0.1608 + 0.7478j, 0.1144 + 0.6848j, 0.0916 + 0.5287j, 0.0670 + 2.9064j, 0.1563 - 3.8915j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
-               [0.1309 + 0.5973j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.1309 + 0.5973j, 0.1309 + 0.5973j, 0.1961 + 1.5928j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.1961 + 1.5928j],
-               [0.2104 + 0.8320j, 0.1309 + 0.5973j, 0.1309 + 0.5973j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.4267 - 11.0715j, 0.2104 + 0.8320j, 0.1309 + 0.5973j, 0.2104 + 0.8320j],
-               [0.1608 + 0.7478j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.2104 + 0.8320j, 0.4811 - 10.0023j, 0.1608 + 0.7478j, 0.2104 + 0.8320j],
-               [0.0826 + 0.2831j, 0.1608 + 0.7478j, 0.1608 + 0.7478j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.1309 + 0.5973j, 0.1608 + 0.7478j, 0.1563 - 3.8915j, 0.1608 + 0.7478j],
-               [0.1961 + 1.5928j, 0.0826 + 0.2831j, 0.0826 + 0.2831j, 0.1961 + 1.5928j, 0.1961 + 1.5928j, 0.1961 + 1.5928j, 0.2104 + 0.8320j, 0.2104 + 0.8320j, 0.1608 + 0.7478j, 0.6412 - 16.8938j]])
+# Set initial stable state
+y0 = np.array([0.1564, 0.1806, 0.1631, 0.3135, 0.1823, 0.1849, 0.1652, 0.2953, -0.06165, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+y0 = np.zeros(18)  # Alternatively, you can initialize all elements to zero
 
-Y4 = np.array([[0.1275 - 3.4084j, 0.0602 + 2.2828j, 0.0626 + 0.1259j, 0.0503 + 0.1147j, 0.0246 + 0.1411j, 0.0566 + 0.2610j, 0.1262 + 0.6649j, 0.0566 + 0.2610j, 0.1262 + 0.6649j, 0.2974 - 8.1663j],
-               [0.0602 + 2.2828j, 0.1527 - 3.4695j, 0.0626 + 0.1259j, 0.0503 + 0.1147j, 0.0246 + 0.1411j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1986 + 0.8729j],
-               [0.0626 + 0.1259j, 0.0626 + 0.1259j, 0.1371 - 3.2975j, 0.0400 + 0.0880j, 0.0245 + 0.1410j, 0.0564 + 0.2607j, 0.1260 + 0.6645j, 0.0564 + 0.2607j, 0.1260 + 0.6645j, 0.2976 - 8.1661j],
-               [0.0503 + 0.1147j, 0.0503 + 0.1147j, 0.0400 + 0.0880j, 0.1091 - 2.9505j, 0.0227 + 0.1177j, 0.0518 + 0.2634j, 0.1104 + 0.6141j, 0.0518 + 0.2634j, 0.1104 + 0.6141j, 0.2558 - 6.7784j],
-               [0.0246 + 0.1411j, 0.0246 + 0.1411j, 0.0245 + 0.1410j, 0.0227 + 0.1177j, 0.1095 - 2.9256j, 0.0289 + 0.1355j, 0.0590 + 0.3143j, 0.0289 + 0.1355j, 0.0590 + 0.3143j, 0.1389 + 0.5992j],
-               [0.0566 + 0.2610j, 0.0326 + 0.1446j, 0.0564 + 0.2607j, 0.0518 + 0.2634j, 0.0289 + 0.1355j, 0.1275 - 3.4084j, 0.1262 + 0.6649j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1986 + 0.8729j],
-               [0.1262 + 0.6649j, 0.0820 + 0.3649j, 0.1260 + 0.6645j, 0.1104 + 0.6141j, 0.0590 + 0.3143j, 0.1262 + 0.6649j, 0.2554 - 6.8238j, 0.0820 + 0.3649j, 0.1986 + 0.8729j, 0.4049 - 10.7401j],
-               [0.0566 + 0.2610j, 0.0326 + 0.1446j, 0.0564 + 0.2607j, 0.0518 + 0.2634j, 0.0289 + 0.1355j, 0.0326 + 0.1446j, 0.0820 + 0.3649j, 0.1275 - 3.4695j, 0.0626 + 0.1259j, 0.1986 + 0.8729j],
-               [0.1262 + 0.6649j, 0.0820 + 0.3649j, 0.1260 + 0.6645j, 0.1104 + 0.6141j, 0.0590 + 0.3143j, 0.0820 + 0.3649j, 0.1986 + 0.8729j, 0.0626 + 0.1259j, 0.1371 - 3.2975j, 0.2974 - 8.1663j],
-               [0.2974 - 8.1663j, 0.1986 + 0.8729j, 0.2976 - 8.1661j, 0.2558 - 6.7784j, 0.1389 + 0.5992j, 0.1986 + 0.8729j, 0.4049 - 10.7401j, 0.1986 + 0.8729j, 0.2974 - 8.1663j, 0.7295 - 19.6049j]])
+# Set simulation parameters
+delta_t = 2.5e-4
+T_sim = 15
+tspan = np.arange(0, T_sim + delta_t, delta_t)
+T_fault_in = 2
+T_fault_end = 2.525
+m = 9
+n = 18
+T = 0.1
+xf = y0.copy()
+t_c = 3
+k = 1
 
-# Define the fault impedance
-Zf = 0.1 + 1j * 1.0
+# Simulate fault (discretized swing equations)
+yy = np.zeros((n, len(tspan)))
 
-# Define the current values at bus 3 with the fault current injection
-I3 = np.array([0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])  # Injecting 10 A at bus 3
+for t in tspan:
+    yy[:, k - 1] = swing(t, delta_t, y0, np.zeros(m))
+    y0 = yy[:, k - 1].copy()
+    k += 1
 
-# Calculate the bus currents
-I = np.linalg.solve(Y3 + np.diag([Zf] * 10), Y4 @ np.conj(I3) - (np.conj(V3) - V4) / Zf)
+# Initial state control
+x0 = yy[:, int(round(t_c / delta_t))]
 
-# Print the bus currents
-for i, current in enumerate(I):
-    print(f"I{i + 1} = {current:.4f} A")
+# Plot results
+plt.figure(1)
+plt.subplot(2, 2, 1)
+plt.plot(tspan, yy[0:9, :])
+plt.fill_between([T_fault_in, T_fault_in, T_fault_end, T_fault_end], [-20, 200, 200, -20], 'r', alpha=0.25, linestyle='none')
+plt.ylabel('phase')
+plt.xlabel('time t')
+plt.legend(['gen 10', 'gen 2', 'gen 3', 'gen 4', 'gen 5', 'gen 6', 'gen 7', 'gen 8', 'gen 9'])
+plt.subplot(2, 2, 3)
+plt.plot(tspan, yy[9:18, :])
+plt.fill_between([T_fault_in, T_fault_in, T_fault_end, T_fault_end], [-20, 60, 60, -20], 'r', alpha=0.25, linestyle='none')
+plt.ylabel('frequency')
+plt.xlabel('time t')
+plt.legend(['gen 10', 'gen 2', 'gen 3', 'gen 4', 'gen 5', 'gen 6', 'gen 7', 'gen 8', 'gen 9'])
 
-# Extract the real and imaginary parts of the currents for plotting
-real_parts = np.real(I)
-imaginary_parts = np.imag(I)
+# Generate data for control
+N = 5000
+sigma = 0.01
+U = np.zeros((m * round(T / delta_t), N))
+X0 = np.zeros((n, N))
+X1T = np.zeros((n * (round(T / delta_t) - 1), N))
+XT = np.zeros((n, N))
 
-# Create a bar chart to visualize the real and imaginary parts of the currents
-bus_numbers = range(1, len(I) + 1)
-plt.bar(bus_numbers, real_parts, label='Real Part', width=0.4)
-plt.bar(bus_numbers, imaginary_parts, label='Imaginary Part', width=0.4, bottom=real_parts)
-plt.xlabel('Bus Number')
-plt.ylabel('Current (A)')
-plt.title('Bus Currents After Fault')
-plt.legend()
-plt.show()
+for i in range(N):
+    k = 1
+    u = 1e-3 * np.random.randn(m, int(round(T / delta_t)))
+    y0 = np.array([0.1564 + sigma * np.random.randn(),
+                   0.1806 + sigma * np.random.randn(),
+                   0.1631 + sigma * np.random.randn(),
+                   0.3135 + sigma * np.random.randn(),
+                   0.1823 + sigma * np.random.randn(),
+                   0.1849 + sigma * np.random.randn(),
+                   0.1652 + sigma * np.random.randn(),
+                   0.2953 + sigma * np.random.randn(),
+                   -0.06165 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn(),
+                   0 + sigma * np.random.randn()])
+    
+    y0_data = y0.copy()
+    
+    for t in np.arange(0, T - delta_t, delta_t):
+        y_data = swing(t, delta_t, y0_data, u[:, k - 1])
+        y0_data = y_data.copy()
+        k += 1
+    
+    U[:, i] = np.flipud(u).reshape(-1)
+    X0[:, i] = y0
+    X1T[:, i] = np.flipud(y_data - xf).reshape(-1)
+    XT[:, i] = y_data
+
+# Save data
+np.savez('data_m2_x0_5000', U=U, X0=X0, X1T=X1T, XT=XT)
