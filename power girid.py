@@ -45,8 +45,32 @@ t_c = 3
 k = 1
 
 # Simulate fault (discretized swing equations)
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Simulate fault (discretized swing equations)
 yy = np.zeros((n, len(tspan)))
 
+# Assuming tspan is a 1D array with 60001 elements
+tspan = np.linspace(0, 200, 60001)  # You should adjust the start and end values accordingly
+
+# Assuming yy is a 2D array with shape (10, 60001)
+
+# Continue with your simulation and calculation of yy here...
+
+# After you have calculated yy, you can now plot it
+# Plot the first 9 rows of yy against tspan for the same number of time points
+plt.figure()
+for i in range(9):
+    plt.plot(tspan[:len(yy[i, :])], yy[i, :])
+
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Plot of First 9 Rows of yy')
+plt.grid()
+plt.show()
+import numpy as np
+import matplotlib.pyplot as plt
 def swing(t, delta_t, y0, control_input):
     # Implement your swing function here
     pass
@@ -55,6 +79,98 @@ for t in tspan:
     yy[:, k - 1] = swing(t, delta_t, y0, np.zeros(m))
     y0 = yy[:, k - 1]
     k += 1
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define your variables (yy, final_time, num_time_steps, num_variables) here
+final_time = 10  # Replace with the actual final time
+num_time_steps = 100  # Adjust this number to match the number of time steps used in your data generation
+tspan = np.linspace(0, final_time, num_time_steps)
+
+num_variables = 18  # Set this to match the number of columns in yy
+tspan = np.linspace(0, final_time, num_variables)
+
+
+# Assuming you want to plot all data points
+# Remove the subset selection
+subset_of_yy = yy[:, :10]  # Select the first 10 columns of yy
+
+
+# Adjust tspan to have the same number of elements as variables (18 in this case)
+tspan = np.linspace(0, final_time, num_variables)
+for i in range(subset_of_yy.shape[1]):
+    plt.plot(tspan, subset_of_yy[:, i])
+  # Adjust the range and number of points as needed
+
+# Now you can plot the data for all variables
+for i in range(yy.shape[1]):  # Use yy instead of subset_of_yy
+    plt.plot(tspan, yy[:, i])
+
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Your Title Here')
+plt.show()
+import matplotlib.pyplot as plt
+
+# Ensure tspan has the same length as the number of data points in yy
+tspan = your_tspan_array  # Replace with your actual tspan data
+
+# Iterate through the columns of yy and plot each one
+for i in range(yy.shape[1]):
+    plt.plot(tspan, yy[:, i])
+
+# Add labels, legend, and show the plot
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.legend(['Curve 1', 'Curve 2', 'Curve 3', ...])  # Add labels for each curve
+plt.show()
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define your variables (yy, final_time, num_time_steps, num_variables) here
+final_time = 10  # Replace with the actual final time
+num_time_steps = 100  # Adjust this number to match the number of time steps used in your data generation
+
+
+
+# Create an array of time values matching the number of variables
+tspan = np.linspace(0, final_time, num_variables)
+
+# Assuming you have your data in the variable yy
+# yy = ...  # Replace with your data
+
+# Now you can plot the data for all variables
+for i in range(yy.shape[1]):
+    plt.plot(tspan, yy[:, i])
+
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Your Title Here')
+plt.show()
+
+
+
+# Assuming yy is a numpy array with shape (num_variables, num_time_steps)
+# where num_variables is the number of variables you want to plot
+# and num_time_steps is the number of time steps
+# Example:
+# yy = np.array([[...], [...], ...])
+
+# Define tspan with the correct number of time steps
+tspan = np.linspace(0, final_time, num_time_steps)
+
+# Then, you can plot the variables
+for i in range(num_variables):
+    plt.plot(tspan, yy[i, :])
+
+plt.xlabel('Time')
+plt.ylabel('Variable Value')
+plt.title('Variable vs. Time')
+plt.show()
+
+# Rest of your main code
+# ...
+
 
 # Initial state control
 x0 = yy[:, int(round(t_c / delta_t))]
