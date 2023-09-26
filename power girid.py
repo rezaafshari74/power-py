@@ -140,20 +140,6 @@ for t in tspan:
     y0 = yy[:, k - 1]
     k += 1
 
-
-
-
-
-
-# You can also plot your results or perform further analysis here
-
-
-# You can also plot your results or perform further analysis here
-
-
-# You can also plot your results or perform further analysis here
-
-
 # Assuming you want to plot all data points
 # Remove the subset selection
 subset_of_yy = yy[:, :10]  # Select the first 10 columns of yy
