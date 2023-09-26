@@ -74,6 +74,19 @@ import matplotlib.pyplot as plt
 def swing(t, delta_t, y0, control_input):
     # Implement your swing function here
     pass
+import numpy as np
+
+# Initial array with 60000 columns
+yy = np.zeros((n, 60000))
+
+# Check if k exceeds the current array size
+if k > yy.shape[1]:
+    # Resize the array to accommodate more columns
+    new_columns = k - yy.shape[1] + 1
+    yy = np.hstack((yy, np.zeros((n, new_columns))))
+
+# Now you can safely assign values to yy[:, k - 1]
+yy[:, k - 1] = swing(t, delta_t, y0, np.zeros(m))
 
 for t in tspan:
     yy[:, k - 1] = swing(t, delta_t, y0, np.zeros(m))
@@ -82,13 +95,63 @@ for t in tspan:
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define your variables (yy, final_time, num_time_steps, num_variables) here
+# Define your variables (yy, final_time, num_time_steps, num_variables, delta_t, m) here
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define your variables (yy, final_time, num_time_steps, num_variables, delta_t, m) here
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define your variables (yy, final_time, num_time_steps, num_variables, delta_t, m) here
 final_time = 10  # Replace with the actual final time
 num_time_steps = 100  # Adjust this number to match the number of time steps used in your data generation
+
+# Define the initial conditions and other necessary variables (yy, delta_t, m) here
+# yy = ...
+# delta_t = ...
+# m = ...
+
 tspan = np.linspace(0, final_time, num_time_steps)
 
 num_variables = 18  # Set this to match the number of columns in yy
-tspan = np.linspace(0, final_time, num_variables)
+
+# Initialize k, yy, and t
+k = 1
+yy = np.zeros((num_variables, 1))  # Start with a single column
+t = 0  # Initialize t here
+
+# Now you can use tspan in your loop
+# Define 'T' with an appropriate value
+T = 0  # Assign a suitable initial value to T
+
+# Now you can use 'T' in your loop
+# Loop through 'tspan' directly
+for t in tspan:
+    # Check if k exceeds the current array size
+    if k > yy.shape[1]:
+        # Resize the array to accommodate more columns
+        new_columns = k - yy.shape[1] + 1
+        yy = np.hstack((yy, np.zeros((num_variables, new_columns))))
+
+    # Use 't' from 'tspan' directly
+    yy[:, k - 1] = swing(t, delta_t, y0, np.zeros(m))
+
+    y0 = yy[:, k - 1]
+    k += 1
+
+
+
+
+
+
+# You can also plot your results or perform further analysis here
+
+
+# You can also plot your results or perform further analysis here
+
+
+# You can also plot your results or perform further analysis here
 
 
 # Assuming you want to plot all data points
