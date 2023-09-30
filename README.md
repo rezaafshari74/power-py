@@ -22,9 +22,9 @@ Calculation of control inputs to recover the system from a fault.
 Plotting Results:
 
 Various plots to visualize the system behavior.
-To use this code for your power grid simulation, follow these steps:
+follow these steps to use this code for your power grid simulation:
 
-Ensure you have installed the required dependencies mentioned in the Dependencies section.
+you should have installed the required dependencies mentioned in the Dependencies section.
 
 Configure the grid parameters in the NE_test_parameters.py file.
 
