@@ -1,48 +1,35 @@
-Readme file:
-This Python script is designed for analyzing power systems under fault conditions. It calculates and visualizes bus currents after a fault has occurred in a power network.
-Features
-•	Calculates bus currents after a fault in a power network.
-•	Visualizes the real and imaginary parts of the calculated currents.
-•	Easy-to-use Python script for power system engineers and students.
-Prerequisites
-•	Before you can use this script, ensure you have the following:
-•	Python 3.x installed on your machine.
-•	Required Python packages (NumPy, Matplotlib) installed. You can install them using pip:
-pip install numpy matplotlib
-To get started with this project, follow these steps:
-git clone https://github.com/your-username/power-fault-analysis.git
-cd power-fault-analysis
-Open the power_fault_analysis.py script in a text editor or Python IDE to customize the power system parameters. ( I ran the code in this 
-Visual Studio Code program).
-In the script, you can define the power system parameters, including:
+The code is structured as follows:
 
-Voltage values at bus 3 and bus 4 (V3 and V4 arrays).
-Admittance matrices Y3 and Y4.
-Fault impedance (Zf).
-Current injection at bus 3 (I3 array).
-Modify the parameters according to your specific power system scenario.
+NE_test_parameters.py: This file contains grid parameters and is imported to set up the simulation.
 
-Run the script to calculate the bus currents:
-python power_fault_analysis.py
-Results
-After running the script, it will print the calculated bus currents to the console. Additionally, it will create a bar chart to visualize the real and imaginary parts of the currents.
+Initialization:
 
-Contributing
-Contributions to this project are welcome! If you have improvements or bug fixes to propose, please follow these steps:
+y0: The initial state of the system, representing phase and frequency values for each generator.
+delta_t: The sampling time for the simulation.
+T_sim: The final simulation time.
+tspan: Vector of simulation times.
+T_fault_in and T_fault_end: Time range for introducing a fault.
+m and n: Number of inputs and states in the system.
+T: Control horizon.
+xf: The final stable state.
+t_c: Control starting time.
+Swing Equation Simulation:
 
-Fork the repository.
+swing(t, delta_t, y, u): Function to simulate the swing equations.
+Loop to simulate the fault and update the system state.
+Control Strategy:
 
-Create a new branch for your feature or bug fix.
+Calculation of control inputs to recover the system from a fault.
+Plotting Results:
 
-Make your changes and commit them.
+Various plots to visualize the system behavior.
+To use this code for your power grid simulation, follow these steps:
 
-Push your branch to your fork.
+Ensure you have installed the required dependencies mentioned in the Dependencies section.
 
-Create a pull request to merge your changes into this repository.
+Configure the grid parameters in the NE_test_parameters.py file.
 
-plt.xlabel('Bus Number')
-plt.ylabel('Current (A)')
-plt.title('Bus Currents After Fault')
-plt.legend()
-plt.show()
+Run the code.
+The code provides various plots to visualize the system's behavior, including phase and frequency plots over time. These plots help you understand the system's response to faults and control inputs.
 
+For further customization or improvements, you can replace the simple swing equation implementation (swing(t, delta_t, y, u)) with your own power grid model.
