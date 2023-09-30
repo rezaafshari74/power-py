@@ -1,3 +1,4 @@
+Readme file:
 NE_test_parameters.py: This file contains grid parameters and is imported to set up the simulation.
 
 Initialization:
