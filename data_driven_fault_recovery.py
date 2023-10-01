@@ -245,7 +245,6 @@ plt.show()
 
 # Define the swing function
 def swing(t, delta_t, y, u):
-    # Implement your swing equation here
     pass
 import numpy as np
 
