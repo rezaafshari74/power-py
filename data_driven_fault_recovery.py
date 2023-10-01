@@ -29,7 +29,7 @@ xf = y0
 # Control starting time
 t_c = 3
 
-k = 1  # You can continue with your calculations from here
+k = 1 
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -75,7 +75,6 @@ import numpy as np
 
 # Function to simulate the swing equations
 def swing(t, delta_t, y, u):
-    # Replace this function with your swing equations implementation
     # The function should return the updated state vector
     # For demonstration purposes, we'll assume it updates 'y' by adding 'u' to it
     return y + u
@@ -247,7 +246,6 @@ plt.show()
 # Define the swing function
 def swing(t, delta_t, y, u):
     # Implement your swing equation here
-    # Replace this with your actual code for the swing equation
     pass
 import numpy as np
 
@@ -324,7 +322,6 @@ yp[13] = delta_t * (1 / H[4, 4]) * (-D[4, 4] * (y[12] + u[2]) + P[4] - np.real(Y
         ) + y[12] - k[2]
 
 
-# ... (continue with the rest of the yp equations)
 
 # Example usage:
 y = np.array([1.0] * 18)
@@ -365,7 +362,6 @@ yp[17] = delta_t * (1 / H[8, 8]) * (-D[8, 8] * (y[16] + u[7]) + P[8] - np.real(Y
                  for j in range(4, 11)) 
         ) + y[16] - k[7]
 
-# ... (continue with the rest of the yp equations)
 
 # Example usage:
 y = np.array([1.0] * 18)
